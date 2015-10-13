@@ -7,7 +7,7 @@ function get(req, res, next) {
 }
 
 function post(req, res, next) {
-  res.status(200).json({ hello: 'posts' }) 
+  res.status(200).json({ hello: 'postss' }) 
 }
 
 UsersController.prototype = {
