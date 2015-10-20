@@ -1,17 +1,62 @@
 var settingsConfig = require('./settings/settings-config');
+var jwt    = require('jsonwebtoken');
 
 function RouteConfig() {
 }
 
 function registerRoutes(application) {
   var config = loadRouteConfig();
-
+  var routeItem, controller, route, method;
+  
   for(var i = 0, length = config.routes.length; i < length; i++) {
-    var routeItem = config.routes[i];
+    routeItem = config.routes[i];
 
-    var controller = loadController(routeItem);
-    var route = getRoute(routeItem);
-    var method = getMethod(routeItem);
+    controller = loadController(routeItem);
+    route = getRoute(routeItem);
+    method = getMethod(routeItem);
+
+    registerRoute(application, controller, route, method);
+  }
+  
+  application.use(function(req, res, next) {
+
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log("token = " + token);
+    // decode token
+    if (token) {
+  
+      // verifies secret and checks exp
+      jwt.verify(token, "ilovescotchyscotch", function(err, decoded) {      
+        if (err) {
+          return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        } else {
+          // if everything is good, save to request for use in other routes
+          req.decoded = decoded;
+          console.log("decoded");    
+          console.log(decoded);
+          next();
+        }
+      });
+  
+    } else {
+  
+      // if there is no token
+      // return an error
+      return res.status(403).send({ 
+          success: false, 
+          message: 'No token provided.' 
+      });
+      
+    }
+  });
+  
+  for(var i = 0, length = config.authenticatedRoutes.length; i < length; i++) {
+    routeItem = config.authenticatedRoutes[i];
+
+    controller = loadController(routeItem);
+    route = getRoute(routeItem);
+    method = getMethod(routeItem);
 
     registerRoute(application, controller, route, method);
   }

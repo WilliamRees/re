@@ -1,14 +1,31 @@
 {
   "routes": [
     {
-      "route": "/v1/users",
+      "route": "/api/v1/authenticate",
+      "method": "POST",
+      "controller": "../controllers/v1/authenticate/authenticate-controller"
+    }
+  ],
+  "authenticatedRoutes": [ 
+    {
+      "route": "/api/v1/users",
       "method": "GET",
       "controller": "../controllers/v1/users/users-controller"
     },
     {
-      "route": "/v1/users",
+      "route": "/api/v1/users",
+      "method": "PUT",
+      "controller": "../controllers/v1/users/users-controller"
+    },
+    {
+      "route": "/api/v1/users",
       "method": "POST",
       "controller": "../controllers/v1/users/users-controller"
+    },
+    {
+      "route": "/api/v1/secure",
+      "method": "POST",
+      "controller": "../controllers/v1/secure/secure-controller"
     }
   ]
 }

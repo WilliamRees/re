@@ -13,6 +13,10 @@ function configureWorker(application) {
 }
 
 function configureApplication(application) {
+  
+  application.set('superSecret', settingsConfig.secret); 
+  
+  application.use(bodyParser.urlencoded({ extended: false }));
   application.use(bodyParser.json());
 
   application.use(function(req, res, next) {
