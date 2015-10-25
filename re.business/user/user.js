@@ -1,4 +1,5 @@
 var User = function () {
+	this.id = ""
     this.email = "";
 	this.firstname = "";
 	this.lastname=  "";

@@ -6,26 +6,31 @@ var Schema = mongoose.Schema;
 
 // set up a mongoose model and pass it using module.exports
 var DbUser = mongoose.model('User', new Schema({
-    email: String,
-	firstname: String,
-	lastname: String,
-    password: String,
-    roles: []
-}));
+    email: {type: String, unique : true, required : true, index : true},
+	firstname: {type: String, required : true},
+	lastname: {type: String, required : true},
+    password: {type: String, required : true},
+    roles: {type: Array, required : true}
+},{strict: true}));
 
 var UserProvider = function () {};
 
-UserProvider.save = function (user) {
+UserProvider.save = function (user, errorCallback) {
 	var newUser = new DbUser(user);
-	return newUser.save(function(err) {
-		if (err) throw err;
+	
+	return newUser.save(function(err, user) {
+		if (err) {
+			errorCallback(err);
+		}
+	}).then(function (user) {
+		return AutoMapper.Map(user, new User(), userMap);
+	});	
+};
 
-	}).then(function () {
-		console.log('User saved successfully');
-		return UserProvider.findOne({email: user.email});
-	});
-
-
+UserProvider.count = function (options) {
+	return DbUser.count(options).then(function(count) {
+		return count;
+	});	
 };
 
 UserProvider.findOne = function (options) {

@@ -13,19 +13,24 @@
       "controller": "../controllers/v1/users/users-controller"
     },
     {
+      "route": "/api/v1/users/:id",
+      "method": "GET",
+      "controller": "../controllers/v1/users/user-controller"
+    },
+    {
       "route": "/api/v1/users",
       "method": "PUT",
       "controller": "../controllers/v1/users/users-controller"
     },
     {
-      "route": "/api/v1/users",
-      "method": "POST",
-      "controller": "../controllers/v1/users/users-controller"
+      "route": "/api/v1/organizations",
+      "method": "PUT",
+      "controller": "../controllers/v1/organizations/organization-controller"
     },
     {
-      "route": "/api/v1/secure",
-      "method": "POST",
-      "controller": "../controllers/v1/secure/secure-controller"
+      "route": "/api/v1/organizations/:id",
+      "method": "GET",
+      "controller": "../controllers/v1/organizations/organization-controller"
     }
   ]
 }
